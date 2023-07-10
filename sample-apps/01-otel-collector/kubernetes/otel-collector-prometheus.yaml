@@ -8,7 +8,7 @@ apiVersion: opentelemetry.io/v1alpha1
 kind: OpenTelemetryCollector
 metadata:
   name: my-collector-metrics
-  namespace: otel-collector
+  namespace: OTEL_COLLECTOR_NAMESPACE
 spec:
   image: public.ecr.aws/aws-observability/aws-otel-collector:v0.20.0
   mode: deployment
@@ -17,7 +17,7 @@ spec:
   config: |
     extensions:
       sigv4auth:
-        region: "us-east-1"
+        region: "AWS_REGION"
         service: "aps"
 
     receivers:
@@ -314,7 +314,7 @@ spec:
 
     exporters:
       prometheusremotewrite:
-        endpoint: "https://aps-workspaces.us-east-1.amazonaws.com/workspaces/ws-8ad9d177-d6fc-4527-ad19-da94eb86b020/api/v1/remote_write"
+        endpoint: "AMP_WORKSPACE_URL"
         auth:
           authenticator: sigv4auth
         # external_labels:
@@ -375,4 +375,4 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: amp-iamproxy-ingest-role
-    namespace: otel-collector
+    namespace: OTEL_COLLECTOR_NAMESPACE
