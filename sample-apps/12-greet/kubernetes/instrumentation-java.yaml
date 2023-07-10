@@ -1,0 +1,24 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: Instrumentation
+metadata:
+  name: demo-instrumentation
+  namespace: elb
+spec:
+  exporter:
+    endpoint: http://otel-collector.otel-collector.svc.cluster.local:55680
+  
+  propagators:
+    - tracecontext
+    - baggage
+  sampler:
+    type: parentbased_traceidratio
+    argument: "1"
+  resource:
+    addK8sUIDAttributes: true
+  java:
+    image:  public.ecr.aws/aws-observability/adot-autoinstrumentation-java:v1.27.0
+    env:
+      - name: OTEL_METRICS_EXPORTER
+        value: "prometheus"
+      - name: OTEL_EXPORTER_PROMETHEUS_PORT
+        value: "9464"

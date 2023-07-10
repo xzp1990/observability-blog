@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greet
+  namespace: elb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: greet
+  template:
+    metadata:
+      labels:
+        app: greet
+      annotations:
+        instrumentation.opentelemetry.io/inject-java: "true"
+        prometheus.io/scrape: "true"
+    spec:
+      containers:
+        - name: greet
+          image: 970662323538.dkr.ecr.us-east-1.amazonaws.com/greet:latest
+          ports:
+            - name: tcp
+              containerPort: 8080

@@ -1,0 +1,36 @@
+#
+# OpenTelemetry Collector configuration
+# 参考x-ray的配置，和otlp-exporter的结构一样
+# 可参考：https://aws-otel.github.io/docs/components/otlp-exporter
+# author: xiezhip@amazon.com
+#
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel
+  namespace: otel-collector
+spec:
+  mode: deployment
+  resources:
+    requests:
+      cpu: "1"
+    limits:
+      cpu: "1"
+  config: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:55680
+            
+    exporters:
+      otlp/data-prepper:
+        endpoint: data-prepper.data-prepper.svc.cluster.local:21890
+        tls:
+          insecure: true
+      
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          exporters: [otlp/data-prepper]
