@@ -14,6 +14,9 @@ spec:
         app: person
       annotations:
         instrumentation.opentelemetry.io/inject-java: "true"
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9464"
+        prometheus.io/path: /
     spec:
       containers:
         - name: person

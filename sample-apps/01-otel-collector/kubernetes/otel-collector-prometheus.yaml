@@ -299,12 +299,6 @@ spec:
               regex: Pending|Succeeded|Failed|Completed
               source_labels:
               - __meta_kubernetes_pod_phase
-          
-          - job_name: "java"
-            scrape_interval: 10s
-            metrics_path: "/"
-            static_configs:
-              - targets: ["192.168.85.40:9464","192.168.86.232:9464"]
 
               
             
